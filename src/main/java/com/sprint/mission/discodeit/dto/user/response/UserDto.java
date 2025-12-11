@@ -12,19 +12,8 @@ public record UserDto(
         String username,
         String email,
         BinaryContentDto profile,
-        boolean online
+        Boolean online
 ) {
-   /* public static UserDto from(User user, UserStatus status) {
-        return new UserDto(
-                user.getId(),
-                user.getCreatedAt(),
-                user.getUpdatedAt(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getProfileId(),
-                status.isOnline()
-        );
-    }*/
 
 
 }

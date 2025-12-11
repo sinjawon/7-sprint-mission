@@ -114,10 +114,8 @@ public class BasicUserService implements UserService {
             throw new IllegalArgumentException("이름이 존재합니다 : " + userUpdateRequest.newUsername());
         }
 
-        //     BinaryContent binaryContent = makeBinaryContent(optionalProfileCreateRequest);
 
         BinaryContent binaryContent = null;
-        //  BinaryContent binaryContent = makeBinaryContent(optionalProfileCreateRequest);
         if (optionalProfileCreateRequest.isPresent()) {
             binaryContent = binaryContentService.create(optionalProfileCreateRequest.get());
         }

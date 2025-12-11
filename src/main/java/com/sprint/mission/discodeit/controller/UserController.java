@@ -32,7 +32,6 @@ public class UserController implements UserControllerDocs {
 
 
     // [등록]
-
     @RequestMapping(
             method = RequestMethod.POST
             , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -52,8 +51,7 @@ public class UserController implements UserControllerDocs {
     }
 
 
-// [수정]
-
+    // [수정]
     @RequestMapping(
             path = "{userId}"
             , method = RequestMethod.PATCH
@@ -88,7 +86,6 @@ public class UserController implements UserControllerDocs {
 
 
     // [전체 조회]
-
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<UserDto>> findAll() {
 
