@@ -12,23 +12,28 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
+
 @Getter
 @Table(name = "Channels")
 public class Channel extends BaseUpdateEntity {
 
 
-    //
     @Enumerated(EnumType.STRING)
-    @Column(name = "type", length = 10)
+    @Column(nullable = false)
     private ChannelType type;
 
-    @Column(name = "name", length = 100)
+    @Column(length = 100)
     private String name;
 
-    @Column(name = "description", length = 500)
+    @Column(length = 500)
     private String description;
 
+
+    public Channel(ChannelType type, String name, String description) {
+        this.type = type;
+        this.name = name;
+        this.description = description;
+    }
 
     public void update(String newName, String newDescription) {
 

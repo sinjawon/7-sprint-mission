@@ -1,6 +1,6 @@
 package com.sprint.mission.discodeit.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import com.sprint.mission.discodeit.entity.base.BaseUpdateEntity;
 import com.sprint.mission.discodeit.entity.content.BinaryContent;
 import com.sprint.mission.discodeit.entity.status.UserStatus;
@@ -8,7 +8,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,9 +28,8 @@ public class User extends BaseUpdateEntity {
     @JoinColumn(name = "profile_id", columnDefinition = "uuid")
     private BinaryContent profile;
 
-    @JsonManagedReference
+ 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Setter(AccessLevel.PROTECTED)
     private UserStatus status;
 
     public User(String username, String email, String password, BinaryContent profile) {
@@ -61,6 +59,11 @@ public class User extends BaseUpdateEntity {
 
         }
 
+
+    }
+
+    public void setStatus(UserStatus userStatus) {
+        this.status = userStatus;
 
     }
 }

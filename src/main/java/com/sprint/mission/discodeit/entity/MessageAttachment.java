@@ -22,12 +22,12 @@ public class MessageAttachment extends BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "message_id", foreignKey = @ForeignKey(name = "message_attachments_message_id_fk"))
+    @JoinColumn(name = "message_id")
     private Message message;
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "attachment_id", foreignKey = @ForeignKey(name = "message_attachments_attachment_id_fk"))
+    @JoinColumn(name = "attachment_id")
     private BinaryContent attachment;
 
 

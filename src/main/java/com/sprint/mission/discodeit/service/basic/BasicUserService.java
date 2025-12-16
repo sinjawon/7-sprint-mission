@@ -57,7 +57,6 @@ public class BasicUserService implements UserService {
         }
 
         BinaryContent binaryContent = null;
-        //  BinaryContent binaryContent = makeBinaryContent(optionalProfileCreateRequest);
         if (optionalProfileCreateRequest.isPresent()) {
             binaryContent = binaryContentService.create(optionalProfileCreateRequest.get());
         }
@@ -74,7 +73,6 @@ public class BasicUserService implements UserService {
         UserStatus userStatus = new UserStatus(user, Instant.now());
         user.setStatus(userStatus);
 
-        userRepository.save(user);
 
         return userMapper.toDto(user);
     }

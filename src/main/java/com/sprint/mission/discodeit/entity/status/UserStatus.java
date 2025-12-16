@@ -21,10 +21,10 @@ public class UserStatus extends BaseUpdateEntity {
 
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "user_status_user_id_fk"), nullable = false, unique = true)
+    @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @Column(name = "last_activity", nullable = false)
+    @Column(name = "last_activity", nullable = false, columnDefinition = "timestamp with time zone")
     private Instant lastActiveAt;
 
 
@@ -32,10 +32,7 @@ public class UserStatus extends BaseUpdateEntity {
 
         if (lastActiveAt != null && !lastActiveAt.equals(this.lastActiveAt)) {
             this.lastActiveAt = lastActiveAt;
-
         }
-
-
     }
 
     public Boolean isOnline() {

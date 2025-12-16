@@ -3,33 +3,34 @@ package com.sprint.mission.discodeit.entity;
 import com.sprint.mission.discodeit.entity.base.BaseUpdateEntity;
 import com.sprint.mission.discodeit.entity.content.BinaryContent;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.action.internal.OrphanRemovalAction;
+import org.hibernate.annotations.BatchSize;
+
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "messages")
 public class Message extends BaseUpdateEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "messages_author_id_fk"))
-    private User author;
-
-    @ManyToOne
-    @JoinColumn(name = "channel_id", foreignKey = @ForeignKey(name = "messages_channel_id_fk"), nullable = false)
-    private Channel channel;
-
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "channel_id", columnDefinition = "uuid", nullable = false)
+    private Channel channel;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id", columnDefinition = "uuid")
+    private User author;
+
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
     private final List<MessageAttachment> attachments = new ArrayList<>();
 
