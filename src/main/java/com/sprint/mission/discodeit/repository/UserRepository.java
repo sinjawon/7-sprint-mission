@@ -40,4 +40,10 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             """)
     Optional<User> findByUsernameAndPassword(@Param("username") String username,
                                              @Param("password") String password);
+
+    @Query("SELECT u FROM User u "
+            + "LEFT JOIN FETCH  u.profile "
+            + "JOIN FETCH u.status")
+    List<User> findAllByProfileAndStatus();
+
 }

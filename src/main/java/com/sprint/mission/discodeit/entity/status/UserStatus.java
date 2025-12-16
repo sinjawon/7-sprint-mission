@@ -16,7 +16,12 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user_status")
+@Table(
+        name = "read_statuses",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "channel_id"})
+        }
+)
 public class UserStatus extends BaseUpdateEntity {
 
 

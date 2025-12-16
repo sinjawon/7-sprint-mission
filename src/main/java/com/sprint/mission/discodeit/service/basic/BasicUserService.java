@@ -65,11 +65,11 @@ public class BasicUserService implements UserService {
                 userCreateRequest.username(),
                 userCreateRequest.email(),
                 userCreateRequest.password(),
+
                 binaryContent
         );
 
         //유저정보저장
-
         UserStatus userStatus = new UserStatus(user, Instant.now());
         user.setStatus(userStatus);
 

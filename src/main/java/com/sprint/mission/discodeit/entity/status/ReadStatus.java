@@ -21,8 +21,8 @@ import java.util.UUID;
 @Table(name = "read_status"
         , uniqueConstraints = {
         @UniqueConstraint(
-                name = "read_status_uk",                // 제약 조건 이름
-                columnNames = {"user_id", "channel_id"} // 두 컬럼의 조합이 유니크
+                name = "read_status_uk",
+                columnNames = {"user_id", "channel_id"}
         )
 }
 )
@@ -30,14 +30,14 @@ public class ReadStatus extends BaseUpdateEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "read_status_user_id_fk"), nullable = false)
+    @JoinColumn(name = "user_id", columnDefinition = "uuid")
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "channel_id", foreignKey = @ForeignKey(name = "read_status_user_id_fk"), nullable = false)
+    @JoinColumn(name = "channel_id", columnDefinition = "uuid")
     private Channel channel;
 
-    @Column(name = "last_read_at", nullable = false)
+    @Column(columnDefinition = "timestamp with time zone", nullable = false)
     private Instant lastReadAt;
 
 

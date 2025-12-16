@@ -25,13 +25,7 @@ public class AuthService {
 
 
     public UserDto login(LoginRequest loginRequest) {
-        //이메일매칭
-        /*      UserStatus userStatus = userstatusRepository.findByUserId(user.getId())
-                .orElseThrow(() -> new NoSuchElementException("맞는유저ID가 없어"));*/
-
-        //로그인하면 상태는 최신화 아닐까 생각해서 넣어봤다
-        //LoginResponse.from(user, userStatus.isOnline());
-        ;
+    
         return userRepository
                 .findByUsernameAndPassword(loginRequest.username(), loginRequest.password())
                 .map(userMapper::toDto)
