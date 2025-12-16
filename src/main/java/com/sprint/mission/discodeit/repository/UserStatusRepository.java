@@ -21,7 +21,4 @@ public interface UserStatusRepository extends JpaRepository<UserStatus, UUID> {
     UserStatus save(UserStatus userStatus);
 
 
-    void deleteByUserId(UUID userId);
-
-
 }

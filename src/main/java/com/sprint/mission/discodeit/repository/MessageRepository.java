@@ -6,7 +6,10 @@ import com.sprint.mission.discodeit.entity.status.UserStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -27,10 +30,22 @@ public interface MessageRepository extends JpaRepository<Message, UUID> {
 
     void deleteAllByChannelId(UUID channelId);
 
+
     //채널아이디맞게 생성시간기준내림차로
-    Optional<Message> findTopByChannelIdOrderByCreatedAtDesc(UUID channelId);
+    @Query("SELECT m.createdAt "
+            + "FROM Message m "
+            + "WHERE m.channel.id = :channelId "
+            + "ORDER BY m.createdAt DESC LIMIT 1")
+    Optional<Message> findTopByChannelIdOrderByCreatedAtDesc(@Param("channelId") UUID channelId);
 
-    Slice<Message> findAllByChannelIdOrderByCreatedAtDesc(UUID channelId, Pageable pageable);
 
+    @Query("SELECT m FROM Message m "
+            + "LEFT JOIN FETCH m.author a "
+            + "JOIN FETCH a.status "
+            + "LEFT JOIN FETCH a.profile "
+            + "WHERE m.channel.id=:channelId AND m.createdAt < :createdAt")
+    Slice<Message> findAllByChannelIdOrderByCreatedAtDesc(@Param("channelId") UUID channelId,
+                                                          @Param("createdAt") Instant createdAt,
+                                                          Pageable pageable);
 
 }
