@@ -98,10 +98,9 @@ public class BasicChannelService implements ChannelService {
             //저장동시 리턴값 수정한 채널
             channelRepository.save(channel);
             return channelMapper.toDto(channel);
+        } else {
+            throw new IllegalArgumentException("프라이빛 채널은 업데이이트 못해요");
         }
-        //아니야 프라이빗이야 그냥 수정전채널
-        System.out.println("수정불가 그대로 반환");
-        return channelMapper.toDto(channel);
     }
 
     @Override

@@ -24,9 +24,10 @@ public class BasicBinaryContentService implements BinaryContentService {
     private final BinaryContentMapper binaryContentMapper;
     private final BinaryContentStorage binaryContentStorage;
 
+
     @Override
     @Transactional
-    public BinaryContent create(BinaryContentCreateRequest request) {
+    public BinaryContentDto create(BinaryContentCreateRequest request) {
         BinaryContent binaryContent = new BinaryContent(
                 request.fileName(),
                 (long) request.bytes().length,
@@ -35,7 +36,7 @@ public class BasicBinaryContentService implements BinaryContentService {
         BinaryContent saved = binaryRepository.save(binaryContent);
         //따로 바이너리 저장 로직
         binaryContentStorage.put(saved.getId(), request.bytes());
-        return saved;
+        return binaryContentMapper.toDto(saved);
 
     }
 
@@ -59,9 +60,12 @@ public class BasicBinaryContentService implements BinaryContentService {
 
     @Transactional
     @Override
-    public void delete(UUID BinaryContentId) {
+    public void delete(UUID binaryContentId) {
+        if (!binaryRepository.existsById(binaryContentId)) {
+            throw new NoSuchElementException("BinaryContent with id " + binaryContentId + " not found");
+        }
 
-        binaryRepository.deleteById(BinaryContentId);
+        binaryRepository.deleteById(binaryContentId);
     }
 
     @Transactional(readOnly = true)

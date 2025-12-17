@@ -7,6 +7,7 @@ import com.sprint.mission.discodeit.dto.message.request.FindAllByChannelIdMessag
 import com.sprint.mission.discodeit.dto.message.request.UpdateMessageRequest;
 import com.sprint.mission.discodeit.dto.message.response.MessageDto;
 
+import com.sprint.mission.discodeit.dto.response.PageResponse;
 import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.MessageAttachment;
@@ -14,6 +15,7 @@ import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.content.BinaryContent;
 import com.sprint.mission.discodeit.entity.content.ContentsType;
 import com.sprint.mission.discodeit.mapper.MessageMapper;
+import com.sprint.mission.discodeit.mapper.PageResponseMapper;
 import com.sprint.mission.discodeit.repository.BinaryRepository;
 import com.sprint.mission.discodeit.repository.ChannelRepository;
 import com.sprint.mission.discodeit.repository.MessageRepository;
@@ -40,10 +42,9 @@ public class BasicMessageService implements MessageService {
     private final UserRepository userRepository;
     private final ChannelRepository channelRepository;
     private final MessageRepository messageRepository;
-    private final BinaryRepository binaryRepository;
+    private final PageResponseMapper pageResponseMapper;
     private final MessageMapper messageMapper;
     private final BinaryContentService binaryContentService;
-    //private final BinaryContentStorage binaryContentStorage;
 
 
     @Override
@@ -94,11 +95,19 @@ public class BasicMessageService implements MessageService {
 
     @Override
     @Transactional(readOnly = true)
-    public Slice<MessageDto> findAllByChannelId(UUID channelId, Instant createAt, Pageable pageable) {
-        Slice<Message> slice = messageRepository.findAllByChannelIdOrderByCreatedAtDesc(channelId,
-                Optional.ofNullable(createAt).orElse(Instant.now()),
-                pageable);
-        return slice.map(messageMapper::toDto);
+    public PageResponse<MessageDto> findAllByChannelId(UUID channelId, Instant createAt, Pageable pageable) {
+        Slice<MessageDto> slice = messageRepository.findAllByChannelIdOrderByCreatedAtDesc(channelId,
+                        Optional.ofNullable(createAt).orElse(Instant.now()),
+                        pageable)
+                .map(messageMapper::toDto);
+
+        Instant nextCursor = null;
+        if (!slice.getContent().isEmpty()) {
+            nextCursor = slice.getContent().get(slice.getContent().size() - 1)
+                    .createdAt();
+        }
+
+        return pageResponseMapper.fromSlice(slice, nextCursor);
 
     }
 

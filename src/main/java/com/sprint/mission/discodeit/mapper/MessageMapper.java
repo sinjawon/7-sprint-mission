@@ -5,6 +5,8 @@ import com.sprint.mission.discodeit.dto.message.response.MessageDto;
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.entity.MessageAttachment;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,8 +21,6 @@ public class MessageMapper {
     private final BinaryContentMapper binaryContentMapper;
 
     public MessageDto toDto(Message entity) {
-        if (entity == null) return null;
-
 
         List<BinaryContentDto> attachments = entity.getAttachments() == null
                 ? List.of()

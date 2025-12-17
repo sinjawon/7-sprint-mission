@@ -99,10 +99,13 @@ public class MessageController implements MessageControllerDocs {
                     direction = Sort.Direction.DESC
             ) Pageable pageable
     ) {
-        Slice<MessageDto> slice = messageService.findAllByChannelId(channelId, cursor,
+
+        PageResponse<MessageDto> messages = messageService.findAllByChannelId(channelId, cursor,
                 pageable);
-        PageResponse<MessageDto> response = PageResponseMapper.fromSlice(slice);
-        return ResponseEntity.ok(response);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(messages);
     }
 
 
