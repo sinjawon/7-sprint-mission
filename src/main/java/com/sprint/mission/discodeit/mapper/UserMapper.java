@@ -18,5 +18,5 @@ public interface UserMapper {
             target = "online",
             expression = "java(user.getStatus().isOnline())"
     )
-    UserDto toDto(User entity);
+    UserDto toDto(User user);
 }

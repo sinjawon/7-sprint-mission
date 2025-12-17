@@ -22,7 +22,7 @@ public class BinaryContentController implements BinaryContentServiceDocs {
     private final BinaryContentStorage binaryContentStorage;
 
 
-    @RequestMapping(path = "{binaryContentId}", method = RequestMethod.GET)
+    @GetMapping(path = "{binaryContentId}")
     public ResponseEntity<BinaryContentDto> find(@PathVariable UUID binaryContentId) {
 
         BinaryContentDto binaryContent = binaryContentService.find(binaryContentId);
@@ -32,7 +32,7 @@ public class BinaryContentController implements BinaryContentServiceDocs {
                 .body(binaryContent);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<BinaryContentDto>> findAllByIdIn(
             @RequestParam("binaryContentId") List<UUID> binaryContentId) {
 
@@ -46,7 +46,6 @@ public class BinaryContentController implements BinaryContentServiceDocs {
 
     @GetMapping("/{binaryContentId}/download")
     public ResponseEntity<?> download(@PathVariable UUID binaryContentId) {
-
         return binaryContentService.download(binaryContentId);
     }
 

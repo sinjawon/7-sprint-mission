@@ -23,7 +23,7 @@ public class ChannelController implements ChannelControllerDocs {
 
     // [공개채널 생성]
 
-    @RequestMapping(path = "public", method = RequestMethod.POST)
+    @PostMapping(path = "public")
     public ResponseEntity<ChannelDto> create(@RequestBody PublicChannelCreateRequest request) {
         ChannelDto createdChannel = channelService.create(request);
         return ResponseEntity
@@ -32,7 +32,7 @@ public class ChannelController implements ChannelControllerDocs {
     }
     // [비공개 채널 생성]
 
-    @RequestMapping(path = "private", method = RequestMethod.POST)
+    @PostMapping(path = "private")
     public ResponseEntity<ChannelDto> create(@RequestBody PrivateChannelCreateRequest request) {
         ChannelDto createdChannel = channelService.create(request);
         return ResponseEntity
@@ -42,7 +42,7 @@ public class ChannelController implements ChannelControllerDocs {
 
 
     // [공개채널 정보 수정]
-    @RequestMapping(path = "{channelId}", method = RequestMethod.PATCH)
+    @PatchMapping(path = "{channelId}")
     public ResponseEntity<ChannelDto> update(@PathVariable UUID channelId,
                                              @RequestBody ChannelUpdateRequest request) {
         ChannelDto udpatedChannel = channelService.update(channelId, request);
@@ -52,7 +52,7 @@ public class ChannelController implements ChannelControllerDocs {
     }
 
     // [채널 삭제]
-    @RequestMapping(path = "{channelId}", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "{channelId}")
     public ResponseEntity<Void> delete(@PathVariable UUID channelId) {
         channelService.delete(channelId);
 
@@ -63,7 +63,7 @@ public class ChannelController implements ChannelControllerDocs {
 
 
     // [특정 사용자가 볼 수 있는 모든 채널 목록 조회]
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<ChannelDto>> findAllByUserId(@RequestParam("userId") UUID userId) {
         List<ChannelDto> allByUserId = channelService.findAllByUserId(userId);
 

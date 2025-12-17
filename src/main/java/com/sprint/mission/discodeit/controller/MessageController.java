@@ -34,8 +34,7 @@ public class MessageController implements MessageControllerDocs {
     private final MessageService messageService;
 
     //[ ] 메시지를 보낼 수 있다.
-    @RequestMapping(
-            method = RequestMethod.POST,
+    @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDto> createMessage(
             @RequestPart("messageCreateRequest") CreateMessageRequest request,
@@ -66,7 +65,7 @@ public class MessageController implements MessageControllerDocs {
                 .body(messageResponse);
     }
 
-    @RequestMapping(path = "{messageId}", method = RequestMethod.PATCH)
+    @PatchMapping(path = "{messageId}")
     public ResponseEntity<MessageDto> updateMessage(@PathVariable UUID messageId,
                                                     @RequestBody UpdateMessageRequest request) {
         MessageDto update = messageService.update(messageId, request);
@@ -77,7 +76,7 @@ public class MessageController implements MessageControllerDocs {
     }
 
 
-    @RequestMapping(path = "{messageId}", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "{messageId}")
     public ResponseEntity<Void> deleteMessage(@PathVariable UUID messageId) {
 
         messageService.delete(messageId);

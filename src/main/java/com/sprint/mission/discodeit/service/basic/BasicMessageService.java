@@ -45,6 +45,8 @@ public class BasicMessageService implements MessageService {
     private final PageResponseMapper pageResponseMapper;
     private final MessageMapper messageMapper;
     private final BinaryContentService binaryContentService;
+    private final BinaryRepository binaryRepository;
+    private final BinaryContentStorage binaryContentStorage;
 
 
     @Override
@@ -69,14 +71,22 @@ public class BasicMessageService implements MessageService {
                 request.content()
         );
 
-        if (!binaryContentCreateRequests.isEmpty()) {
-            List<BinaryContent> binaryContents = makeBinaryContentlist(binaryContentCreateRequests);
+        List<BinaryContent> attachments = binaryContentCreateRequests.stream()
+                .map(attachmentRequest -> {
+                    String fileName = attachmentRequest.fileName();
+                    String contentType = attachmentRequest.contentType();
+                    byte[] bytes = attachmentRequest.bytes();
 
-            for (BinaryContent bc : binaryContents) {
-                message.addAttachment(bc);
-            }
+                    BinaryContent binaryContent = new BinaryContent(fileName, (long) bytes.length,
+                            contentType);
+                    binaryRepository.save(binaryContent);
+                    binaryContentStorage.put(binaryContent.getId(), bytes);
+                    return binaryContent;
+                })
+                .toList();
+        for (BinaryContent attachment : attachments) {
+            message.addAttachment(attachment);
         }
-
 
         messageRepository.save(message);
 
@@ -133,14 +143,6 @@ public class BasicMessageService implements MessageService {
 
         messageRepository.deleteById(messageId);
     }
-
-
-    private List<BinaryContent> makeBinaryContentlist(List<BinaryContentCreateRequest> binaryContentCreateRequests) {
-        return binaryContentCreateRequests.stream()
-                .map(binaryContentService::create)
-                .toList();
-    }
-
-
+    
 }
 

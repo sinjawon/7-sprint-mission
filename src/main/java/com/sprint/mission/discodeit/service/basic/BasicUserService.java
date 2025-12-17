@@ -1,6 +1,7 @@
 package com.sprint.mission.discodeit.service.basic;
 
 import com.sprint.mission.discodeit.dto.Binarycontent.request.BinaryContentCreateRequest;
+import com.sprint.mission.discodeit.dto.Binarycontent.response.BinaryContentDto;
 import com.sprint.mission.discodeit.dto.user.request.UserCreateRequest;
 import com.sprint.mission.discodeit.dto.user.request.UserUpdateRequest;
 import com.sprint.mission.discodeit.dto.user.response.UserDto;
@@ -33,11 +34,9 @@ public class BasicUserService implements UserService {
     // 추가(중간정도) , 삭제가 빈번하면 링크라들었다
     //마지막에 컴퓨터 좋아지면서 리스트를 많이쓴다 해서 리스트했다
     private final UserRepository userRepository;
-    private final UserStatusRepository userStatusRepository;
-    private final BinaryRepository binaryRepository;
     private final UserMapper userMapper;
+    private final BinaryRepository binaryRepository;
     private final BinaryContentStorage binaryContentStorage;
-
     private final BinaryContentService binaryContentService;
 
 
@@ -56,10 +55,8 @@ public class BasicUserService implements UserService {
             throw new IllegalArgumentException("이름 이미 존재합니다" + userCreateRequest.username());
         }
 
-        BinaryContent binaryContent = null;
-        if (optionalProfileCreateRequest.isPresent()) {
-            binaryContent = binaryContentService.create(optionalProfileCreateRequest.get());
-        }
+        BinaryContent binaryContent = binaryContentSolve(optionalProfileCreateRequest);
+
         //유저정보
         User user = new User(
                 userCreateRequest.username(),
@@ -112,10 +109,8 @@ public class BasicUserService implements UserService {
         }
 
 
-        BinaryContent binaryContent = null;
-        if (optionalProfileCreateRequest.isPresent()) {
-            binaryContent = binaryContentService.create(optionalProfileCreateRequest.get());
-        }
+        BinaryContent binaryContent = binaryContentSolve(optionalProfileCreateRequest);
+
 
         user.update(userUpdateRequest.newUsername(),
                 userUpdateRequest.newEmail(),
@@ -137,4 +132,23 @@ public class BasicUserService implements UserService {
         userRepository.deleteById(userId);
     }
 
+    public BinaryContent binaryContentSolve(Optional<BinaryContentCreateRequest> optionalProfileCreateRequest) {
+        BinaryContent binaryContent = null;
+        if (optionalProfileCreateRequest.isPresent()) {
+            byte[] bytes = optionalProfileCreateRequest.get().bytes();
+
+            binaryContent = new BinaryContent(
+                    optionalProfileCreateRequest.get().fileName(),
+                    (long) bytes.length,
+                    optionalProfileCreateRequest.get().contentType()
+            );
+            binaryRepository.save(binaryContent);
+            binaryContentStorage.put(binaryContent.getId(), bytes);
+        }
+        return binaryContent;
+    }
+
+
 }
+
+

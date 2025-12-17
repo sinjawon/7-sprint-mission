@@ -8,10 +8,7 @@ import com.sprint.mission.discodeit.service.basic.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +18,7 @@ public class LoginController implements LoginControllerDocs {
     private final AuthService authService;
 
     // [등록]
-    @RequestMapping(path = "login", method = RequestMethod.POST)
+    @PostMapping(path = "login")
     public ResponseEntity<UserDto> login(@RequestBody LoginRequest req) {
         UserDto login = authService.login(req);
         return ResponseEntity

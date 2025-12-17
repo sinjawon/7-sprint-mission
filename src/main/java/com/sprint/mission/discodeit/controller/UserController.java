@@ -32,9 +32,7 @@ public class UserController implements UserControllerDocs {
 
 
     // [등록]
-    @RequestMapping(
-            method = RequestMethod.POST
-            , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserDto> create(
             @RequestPart("userCreateRequest") UserCreateRequest request,
             @RequestPart(value = "profile", required = false) MultipartFile profile
@@ -52,9 +50,8 @@ public class UserController implements UserControllerDocs {
 
 
     // [수정]
-    @RequestMapping(
+    @PatchMapping(
             path = "{userId}"
-            , method = RequestMethod.PATCH
             , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<UserDto> update(
             @PathVariable UUID userId,
@@ -69,14 +66,14 @@ public class UserController implements UserControllerDocs {
         UserDto update = userService.update(userId, request, optionalProfile);
 
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(update);
     }
 
 
     // [삭제]
 
-    @RequestMapping(path = "{userId}", method = RequestMethod.DELETE)
+    @DeleteMapping(path = "{userId}")
     public ResponseEntity<Void> delete(@PathVariable("userId") UUID userId) {
         userService.delete(userId);
         return ResponseEntity
@@ -86,7 +83,7 @@ public class UserController implements UserControllerDocs {
 
 
     // [전체 조회]
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<UserDto>> findAll() {
 
         return ResponseEntity
@@ -94,7 +91,7 @@ public class UserController implements UserControllerDocs {
                 .body(userService.findAll());
     }
 
-    @RequestMapping(path = "{userId}/userStatus", method = RequestMethod.PATCH)
+    @PatchMapping(path = "{userId}/userStatus")
     public ResponseEntity<UserStatusDto> updateUserStatusByUserId(@PathVariable UUID userId,
                                                                   @RequestBody UserStatusUpdateRequest request) {
 
