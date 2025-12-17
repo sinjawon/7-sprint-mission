@@ -13,9 +13,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -221,5 +226,12 @@ public interface MessageControllerDocs {
                     )
             )
     })
-    ResponseEntity<PageResponse<MessageDto>> findAllByChannelId(UUID channelId, int page);
+    ResponseEntity<PageResponse<MessageDto>> findAllByChannelId(@RequestParam("channelId") UUID channelId,
+                                                                @RequestParam(value = "cursor", required = false) Instant cursor,
+                                                                @PageableDefault(
+                                                                        size = 50,
+                                                                        page = 0,
+                                                                        sort = "createdAt",
+                                                                        direction = Sort.Direction.DESC
+                                                                ) Pageable pageable);
 }

@@ -30,6 +30,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -93,9 +94,10 @@ public class BasicMessageService implements MessageService {
 
     @Override
     @Transactional(readOnly = true)
-    public Slice<MessageDto> findAllByChannelId(UUID channelId, int page) {
-        Pageable pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Slice<Message> slice = messageRepository.findAllByChannelIdOrderByCreatedAtDesc(channelId, pageable);
+    public Slice<MessageDto> findAllByChannelId(UUID channelId, Instant createAt, Pageable pageable) {
+        Slice<Message> slice = messageRepository.findAllByChannelIdOrderByCreatedAtDesc(channelId,
+                Optional.ofNullable(createAt).orElse(Instant.now()),
+                pageable);
         return slice.map(messageMapper::toDto);
 
     }
@@ -116,8 +118,9 @@ public class BasicMessageService implements MessageService {
     @Transactional
     public void delete(UUID messageId) {
 
-        Message message = messageRepository.findById(messageId)
-                .orElseThrow(() -> new NoSuchElementException("메시지 아이디가 없어: " + messageId));
+        if (!messageRepository.existsById(messageId)) {
+            throw new NoSuchElementException("메시지 아이디 :" + messageId + "못찾았어요");
+        }
 
         messageRepository.deleteById(messageId);
     }

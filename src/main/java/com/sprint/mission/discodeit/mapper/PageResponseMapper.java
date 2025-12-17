@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 
 @Mapper(componentModel = "spring")
-public final class PageResponseMapper {
+public class PageResponseMapper {
 
     private PageResponseMapper() {
     }

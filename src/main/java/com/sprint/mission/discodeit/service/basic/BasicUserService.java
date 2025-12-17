@@ -65,7 +65,6 @@ public class BasicUserService implements UserService {
                 userCreateRequest.username(),
                 userCreateRequest.email(),
                 userCreateRequest.password(),
-
                 binaryContent
         );
 
@@ -130,8 +129,7 @@ public class BasicUserService implements UserService {
     @Override
     @Transactional
     public void delete(UUID userId) {
-        boolean exists = userRepository.existsById(userId);
-        if (!exists) {
+        if (!userRepository.existsById(userId)) {
             throw new NoSuchElementException("유유아이디없어요" + userId + " 이걸 못찾았어요");
         }
 
