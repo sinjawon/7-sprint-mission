@@ -13,3 +13,8 @@ spring:
     properties:
       hibernate:
         show_sql: false
+
+logging:
+  level:
+    org.hibernate.SQL: info
+    org.hibernate.orm.jdbc.bind: info
