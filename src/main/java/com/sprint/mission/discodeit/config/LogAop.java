@@ -14,7 +14,7 @@ import java.util.Arrays;
 @Slf4j
 @Aspect
 @Component
-@Order(0)
+@Order(0)// 나중에 여러 aop 들어가면 순서대로 해보쟈
 public class LogAop {
 
     // 컨트롤러, 서비스 어노테이션 붙인것들만
