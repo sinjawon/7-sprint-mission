@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://${DB_HOST:prod-db-host}:${DB_PORT:5432}/${DB_NAME:discodeit}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:change-me}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -18,3 +18,11 @@ logging:
   level:
     org.hibernate.SQL: info
     org.hibernate.orm.jdbc.bind: info
+
+management:
+  endpoint:
+    health:
+      show-details: never
+  info:
+    env:
+      enabled: false
