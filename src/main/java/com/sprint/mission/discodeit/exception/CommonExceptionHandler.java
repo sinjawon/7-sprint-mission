@@ -1,6 +1,7 @@
 package com.sprint.mission.discodeit.exception;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,11 +9,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestControllerAdvice
 public class CommonExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleException(IllegalArgumentException e) {
+        log.warn("잘못된 요청: {}", e.getMessage(), e);
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(e.getMessage());
@@ -20,6 +23,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<String> handleException(NoSuchElementException e) {
+        log.warn("잘못된 요청: {}", e.getMessage(), e);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
@@ -27,6 +31,7 @@ public class CommonExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
+        log.warn("잘못된 요청: {}", e.getMessage(), e);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(e.getMessage());
