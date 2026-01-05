@@ -76,13 +76,15 @@ public class BasicChannelService implements ChannelService {
     @Transactional(readOnly = true)
     @Override
     public List<ChannelDto> findAllByUserId(UUID userId) {
-        List<ChannelDto> list = new ArrayList<>();
+        List<UUID> mySubscribedChannelIds = readStatusRepository.findAllByUserId(userId).stream()
+                .map(ReadStatus::getChannel)
+                .map(Channel::getId)
+                .toList();
 
-        List<Channel> allVisibleForUser = channelRepository.findAllVisibleForUser(userId);
-        for (Channel channel : allVisibleForUser) {
-            list.add(channelMapper.toDto(channel));
-        }
-        return list;
+        return channelRepository.findAllByTypeOrIdIn(ChannelType.PUBLIC, mySubscribedChannelIds)
+                .stream()
+                .map(channelMapper::toDto)
+                .toList();
     }
 
     @Override

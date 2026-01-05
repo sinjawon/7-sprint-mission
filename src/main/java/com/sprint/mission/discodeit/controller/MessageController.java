@@ -33,7 +33,7 @@ public class MessageController implements MessageControllerDocs {
 
     private final MessageService messageService;
 
-    //[ ] 메시지를 보낼 수 있다.
+    // 메시지를 보낼 수 있다.
     @PostMapping(
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<MessageDto> createMessage(
@@ -78,9 +78,7 @@ public class MessageController implements MessageControllerDocs {
 
     @DeleteMapping(path = "{messageId}")
     public ResponseEntity<Void> deleteMessage(@PathVariable UUID messageId) {
-
         messageService.delete(messageId);
-
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

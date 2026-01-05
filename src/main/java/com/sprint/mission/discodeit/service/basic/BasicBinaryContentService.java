@@ -34,7 +34,6 @@ public class BasicBinaryContentService implements BinaryContentService {
                 request.contentType()
         );
         BinaryContent saved = binaryRepository.save(binaryContent);
-        //따로 바이너리 저장 로직
         binaryContentStorage.put(saved.getId(), request.bytes());
         return binaryContentMapper.toDto(saved);
 

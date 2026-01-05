@@ -8,6 +8,7 @@ import com.sprint.mission.discodeit.dto.user.response.UserDto;
 import com.sprint.mission.discodeit.entity.User;
 import com.sprint.mission.discodeit.entity.content.BinaryContent;
 import com.sprint.mission.discodeit.entity.status.UserStatus;
+import com.sprint.mission.discodeit.exception.user.UserAlreadyExistsException;
 import com.sprint.mission.discodeit.mapper.UserMapper;
 import com.sprint.mission.discodeit.repository.BinaryRepository;
 import com.sprint.mission.discodeit.repository.UserRepository;
@@ -48,11 +49,11 @@ public class BasicUserService implements UserService {
 
         //이메일매칭
         if (existEmail) {
-            throw new IllegalArgumentException("이메일이 이미 존재합니다" + userCreateRequest.email());
+            throw UserAlreadyExistsException.withEmail(userCreateRequest.email());
         }
         //닉네임매칭
         if (existName) {
-            throw new IllegalArgumentException("이름 이미 존재합니다" + userCreateRequest.username());
+            throw UserAlreadyExistsException.withUsername(userCreateRequest.username());
         }
 
         BinaryContent binaryContent = binaryContentSolve(optionalProfileCreateRequest);

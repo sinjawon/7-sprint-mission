@@ -21,7 +21,6 @@ public class ReadStatusController implements ReadStatusControllerDocs {
 
     private final ReadStatusService readStatusService;
 
-    //[ ] 특정 채널의 메시지 수신 정보를 생성할 수 있다.
 
     @PostMapping
     public ResponseEntity<ReadStatusDto> createStatus(@RequestBody ReadStatusCreateRequest request) {
@@ -31,7 +30,6 @@ public class ReadStatusController implements ReadStatusControllerDocs {
                 .status(HttpStatus.CREATED)
                 .body(readStatus);
     }
-    // [ ] 특정 채널의 메시지 수신 정보를 수정할 수 있다.
 
 
     @PatchMapping(path = "{readStatusId}")
@@ -43,7 +41,7 @@ public class ReadStatusController implements ReadStatusControllerDocs {
                 .status(HttpStatus.OK)
                 .body(update);
     }
-    //  [ ] 특정 사용자의 메시지 수신 정보를 조회할 수 있다.
+
 
     @GetMapping
     public ResponseEntity<List<ReadStatusDto>> findStatusByUserId(@RequestParam("userId") UUID userId) {

@@ -127,10 +127,9 @@ public class BasicMessageService implements MessageService {
 
         Message message = messageRepository.findById(messageId)
                 .orElseThrow(() -> new NoSuchElementException("매시지아이디가 없어 " + messageId));
-
         message.update(request.newContent());
-
         return messageMapper.toDto(message);
+
     }
 
     @Override
@@ -143,6 +142,6 @@ public class BasicMessageService implements MessageService {
 
         messageRepository.deleteById(messageId);
     }
-    
+
 }
 
