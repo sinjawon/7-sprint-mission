@@ -6,7 +6,7 @@ CREATE TABLE users
         CONSTRAINT users_createdAt_nn NOT NULL,
     updated_at TIMESTAMP,
     deleted_at TIMESTAMP,
-    name       VARCHAR(50)
+    username   VARCHAR(50)
         CONSTRAINT users_name_nn NOT NULL
         CONSTRAINT users_name_uk UNIQUE,
     email      VARCHAR(100)
@@ -60,7 +60,7 @@ CREATE TABLE messages
 );
 
 
-CREATE TABLE binary_content
+CREATE TABLE binary_contents
 (
     id           UUID PRIMARY KEY,
     created_at   TIMESTAMP

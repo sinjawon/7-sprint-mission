@@ -11,6 +11,7 @@ import com.sprint.mission.discodeit.dto.userStatus.response.UserStatusDto;
 import com.sprint.mission.discodeit.service.UserService;
 import com.sprint.mission.discodeit.service.UserStatusService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController implements UserControllerDocs {
 
     private final UserService userService;
@@ -32,7 +34,7 @@ public class UserController implements UserControllerDocs {
 
 
     // [등록]
-    @PatchMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<UserDto> create(
             @RequestPart("userCreateRequest") UserCreateRequest request,
             @RequestPart(value = "profile", required = false) MultipartFile profile
@@ -40,9 +42,9 @@ public class UserController implements UserControllerDocs {
         Optional<BinaryContentCreateRequest> profileRequest = Optional.ofNullable(profile)
                 .flatMap(this::resolveProfileRequest);
 
-
+        log.warn("시작");
         UserDto createUser = userService.create(request, profileRequest);
-
+        log.warn("끝");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(createUser);
